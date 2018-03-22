@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_newEvents"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="@string/new_events" />
+        <item
+            android:id="@+id/nav_myEvents"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="My Events" />
+        <item
+            android:id="@+id/nav_Albums"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="Albums" />
+    </group>
+
+</menu>
