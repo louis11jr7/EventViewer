@@ -52,8 +52,11 @@ public class MyEvents extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                String message = nameArray[position];
-                intent.putExtra("Title", message);
+                String eventTitle = nameArray[position];
+                String eventInfo = infoArray[position];
+
+                intent.putExtra("Title", eventTitle);
+                intent.putExtra("Info", eventInfo);
                 startActivity(intent);
 
             }

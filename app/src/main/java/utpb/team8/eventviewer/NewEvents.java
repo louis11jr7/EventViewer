@@ -1,6 +1,8 @@
 package utpb.team8.eventviewer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+
+import java.io.ByteArrayOutputStream;
 
 public class NewEvents extends Fragment {
     String[] nameArray = {"Party","Meeting","Breakfast","Cleanup","Movie Night","Basketball" };
@@ -56,8 +60,11 @@ public class NewEvents extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                String message = nameArray[position];
-                intent.putExtra("Title", message);
+                String eventTitle = nameArray[position];
+                String eventInfo = infoArray[position];
+
+                intent.putExtra("Title", eventTitle);
+                intent.putExtra("Info", eventInfo);
                 startActivity(intent);
 
             }

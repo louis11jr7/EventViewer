@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings || id == R.id.action_createEvent) {
             displaySelectedScreen(id);
             return true;
         }
@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.action_settings:
                 fragment = new Settings();
+                break;
+            case R.id.action_createEvent:
+                fragment = new CreateEvent();
                 break;
 
         }
