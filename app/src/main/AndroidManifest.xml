@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity" />
+        <activity android:name=".AlbumDetailActivity"></activity>
     </application>
 
 </manifest>
