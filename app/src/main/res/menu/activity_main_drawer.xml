@@ -16,6 +16,10 @@
             android:id="@+id/nav_Albums"
             android:icon="@mipmap/ic_launcher_round"
             android:title="Albums" />
+        <item
+            android:id="@+id/nav_Settings"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="Settings"/>
     </group>
 
 </menu>
