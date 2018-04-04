@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        //when the create event button is pressed it will pass the id to the displaySelectedScreen method
         if (id == R.id.action_createEvent) {
             displaySelectedScreen(id);
             return true;
@@ -70,10 +70,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //when the profile picture is clicked it will pass the id to the displaySelectedScreen method
     public void profileClick(View view){
         displaySelectedScreen(R.id.profile);
     }
 
+    //when a navigation item is selected the corresponding id will be passed to the displayselectedScreen method
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //when an id is passed to this class the method will choose which corresponding fragment to open
     private void displaySelectedScreen(int itemId) {
 
         //creating fragment object

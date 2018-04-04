@@ -3,13 +3,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/coral</item>
-        <item name="colorPrimaryDark">@color/coral</item>
+        <item name="colorPrimary">@color/darkorange</item>
+        <item name="colorPrimaryDark">@color/darkorange</item>
         <item name="colorAccent">@color/ghostwhite</item>
         <item name="android:colorBackground">@color/black</item>
         <item name="android:colorForeground">@color/whitesmoke</item>
-        <item name="android:navigationBarColor">@color/coral</item>
-        <item name="android:statusBarColor">@color/coral</item>
+        <item name="android:navigationBarColor">@color/darkorange</item>
+        <item name="android:statusBarColor">@color/darkorange</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

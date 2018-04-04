@@ -8,17 +8,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/*This event is used to take information from either the NewEvents page or MyEvents page and
+generate a listView with the corresponding information
+ */
+
 public class CustomListAdapter extends ArrayAdapter {
     //to reference the Activity
     private final Activity context;
 
-    //to store the animal images
+    //to store the event image
     private final Integer[] imageIDarray;
 
-    //to store the list of countries
+    //to store the list of events
     private final String[] nameArray;
 
-    //to store the list of countries
+    //to store the event information
     private final String[] infoArray;
 
 

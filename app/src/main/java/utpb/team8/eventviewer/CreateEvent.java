@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+/*This class is used to gather user input from the CreateEvent page and insert it into the database as a new event
+ */
 public class CreateEvent extends Fragment {
 
     @Nullable

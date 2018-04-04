@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+//this page is used to manage the users profile. Could be integrated with the settings page
 public class Profile extends Fragment {
 
     @Nullable

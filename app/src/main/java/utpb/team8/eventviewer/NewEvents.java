@@ -15,9 +15,14 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import java.io.ByteArrayOutputStream;
 
+/*This class gathers information from the database and sends that information to the customListAdapter class
+ to generate lists of the events. Specifically this class will gather the information from events
+ that the user has not subscribed to
+ */
 public class NewEvents extends Fragment {
+    //name of the events
     String[] nameArray = {"Party","Meeting","Breakfast","Cleanup","Movie Night","Basketball" };
-
+    //details of the events
     String[] infoArray = {
             "Party at the SAC 6-9 PM",
             "Business meeting @ FishBowl 8-9 AM",
@@ -26,7 +31,7 @@ public class NewEvents extends Fragment {
             "Come watch Spiderman @ the SAC 7 PM",
             "Basketball at the dorms 5 PM"
     };
-
+    //user defined image for the event. If no image is chosen, then a default image will need to be used
     Integer[] imageArray = {R.drawable.ic_launcher_background,
             R.drawable.ic_launcher_background,
             R.drawable.ic_launcher_background,
@@ -50,11 +55,11 @@ public class NewEvents extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("New Events");
-
+        //creates an instance and sends the information gathered in this class to the adapter class
         CustomListAdapter whatever = new CustomListAdapter(getActivity(), nameArray, infoArray, imageArray);
         listView = (ListView) getView().findViewById(R.id.listviewID);
         listView.setAdapter(whatever);
-
+        //if a list item is clicked then the information will be passed to a details page
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,

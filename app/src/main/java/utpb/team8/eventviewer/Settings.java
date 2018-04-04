@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+//this will handle all the users settings
 public class Settings extends Fragment {
 
     @Nullable

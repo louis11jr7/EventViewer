@@ -4,6 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- Strings for each activty page -->
     <string name="action_settings">Settings</string>
     <string name="new_events">New Events</string>
     <string name="my_events">My Events</string>
@@ -12,6 +13,23 @@
     <string name="settings">Settings</string>
     <string name="create_event">Create Event</string>
     <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings for the Settings Page -->
+    <string name="settingsTextView">Settings Activity</string>
+
+    <!-- Strings for the AlbumDetails Page -->
+    <string name="album_details_text">Album Details Activity</string>
+
+    <!-- Strings for the ActivityDetails Page -->
+    <string name="event_title">Event Title</string>
+    <string name="event_info">Event Info</string>
+
+    <!-- Strings for the AlbumListView Page -->
+    <string name="album_titles">Album Titles</string>
+
+    <!-- Strings for the ListView Page -->
+    <string name="name_text_view">Event Name</string>
+    <string name="info_text_view">Event Info</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
