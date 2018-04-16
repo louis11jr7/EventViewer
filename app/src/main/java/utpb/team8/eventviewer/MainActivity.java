@@ -70,10 +70,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    //when the profile picture is clicked it will pass the id to the displaySelectedScreen method
-    public void profileClick(View view){
-        displaySelectedScreen(R.id.profile);
-    }
 
     //when a navigation item is selected the corresponding id will be passed to the displayselectedScreen method
     @SuppressWarnings("StatementWithEmptyBody")
@@ -99,9 +95,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_Albums:
                 fragment = new Albums();
-                break;
-            case R.id.profile:
-                fragment = new Profile();
                 break;
             case R.id.nav_Settings:
                 fragment = new Settings();

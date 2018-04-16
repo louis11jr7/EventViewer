@@ -59,7 +59,7 @@ public class MyEvents extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                Intent intent = new Intent(getActivity(), DetailActivityMyEvents.class);
                 String eventTitle = nameArray[position];
                 String eventInfo = infoArray[position];
 

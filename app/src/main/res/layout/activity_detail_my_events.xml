@@ -26,10 +26,8 @@
                 android:id="@+id/eventTitle"
                 android:layout_width="169dp"
                 android:layout_height="wrap_content"
-                android:layout_column="0"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_span="2"
                 android:text="@string/event_title"
                 android:textAlignment="center"
                 android:textSize="36sp"
@@ -47,8 +45,6 @@
                 android:id="@+id/eventImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_span="2"
                 app:srcCompat="@mipmap/ic_launcher" />
         </TableRow>
 
@@ -62,35 +58,10 @@
                 android:id="@+id/eventInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_span="2"
                 android:text="@string/event_info"
                 android:textSize="24sp" />
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="25dp">
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:onClick="goBack"
-                android:text="Cancel" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:text="I'm Going"
-                android:onClick="submit"/>
-
-        </TableRow>
     </TableLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -18,7 +18,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@color/darkorange"
-        android:onClick="profileClick"
         app:srcCompat="@drawable/ic_perm_identity_black_24dp" />
 
     <TextView
