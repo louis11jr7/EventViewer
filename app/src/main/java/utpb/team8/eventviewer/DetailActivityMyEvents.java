@@ -2,6 +2,7 @@ package utpb.team8.eventviewer;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /*When an event listing is expanded this class controls the corresponding individual album page
@@ -14,14 +15,19 @@ public class DetailActivityMyEvents extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_my_events);
 
-        String eventTitle = getIntent().getStringExtra("Title");
+        Bundle extras = getIntent().getExtras();
+
+        String eventTitle = extras.getString("Title");
         TextView myTitle = (TextView) findViewById(R.id.eventTitle);
         myTitle.setText(eventTitle);
 
-        String eventInfo = getIntent().getStringExtra("Info");
+        String eventInfo = extras.getString("Info");
         TextView myInfo = (TextView) findViewById(R.id.eventInfo);
         myInfo.setText(eventInfo);
 
+        Integer eventImage = extras.getInt("Image");
+        ImageView myImage = (ImageView) findViewById(R.id.eventImage);
+        myImage.setImageResource(eventImage);
 
     }
 }

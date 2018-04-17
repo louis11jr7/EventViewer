@@ -62,9 +62,11 @@ public class MyEvents extends Fragment {
                 Intent intent = new Intent(getActivity(), DetailActivityMyEvents.class);
                 String eventTitle = nameArray[position];
                 String eventInfo = infoArray[position];
+                Integer eventImage = imageArray[position];
 
                 intent.putExtra("Title", eventTitle);
                 intent.putExtra("Info", eventInfo);
+                intent.putExtra("Image", eventImage);
                 startActivity(intent);
 
             }

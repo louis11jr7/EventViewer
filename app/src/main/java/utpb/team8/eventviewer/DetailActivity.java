@@ -20,13 +20,20 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        String eventTitle = getIntent().getStringExtra("Title");
+        Bundle extras = getIntent().getExtras();
+
+        String eventTitle = extras.getString("Title");
         TextView myTitle = (TextView) findViewById(R.id.eventTitle);
         myTitle.setText(eventTitle);
 
-        String eventInfo = getIntent().getStringExtra("Info");
+        String eventInfo = extras.getString("Info");
         TextView myInfo = (TextView) findViewById(R.id.eventInfo);
         myInfo.setText(eventInfo);
+
+        Integer eventImage = extras.getInt("Image");
+        ImageView myImage = (ImageView) findViewById(R.id.eventImage);
+        myImage.setImageResource(eventImage);
+
 
 
     }
