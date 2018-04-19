@@ -20,21 +20,18 @@ of events they have subscribed to
 public class Albums extends Fragment {
 
     //This array will be loaded with the titles of the events
-    String[] nameArray = {"Lunch","Volleyball","Movie Night"};
+    String[] nameArray = {"Lunch","THOR","Football","Project Meeting","Study Session"};
     /*This is a 2d array that will load with the images from the album. There must be an array for each corresponding
     event, even if it is a blank array. This is to avoid error when loading the lists in the AlbumListAdapter class.
     This will ensure that the length of the nameArray matches the amount of arrays within the imageArray. The amount of images
     in each array does not matter but the amount of arrays does.
      */
-    Integer[][] imageArray = {{R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground},
-            {R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_background},
-            {R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_background},};
+    Integer[][] imageArray = {{R.drawable.lunch1, R.drawable.lunch2, R.drawable.lunch3, R.drawable.lunch4},
+            {R.drawable.thor1, R.drawable.thor2},
+            {R.drawable.football1, R.drawable.football2, R.drawable.football3},
+            {},
+            {R.drawable.study1}
+            };
 
     ListView listView;
 

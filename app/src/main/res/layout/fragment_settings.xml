@@ -10,20 +10,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/pageName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/action_settings"
-            android:textAlignment="center"
-            android:textSize="50sp" />
-
-        <TextView
             android:id="@+id/textView6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Username"
             android:textAlignment="center"
-            android:textSize="30sp" />
+            android:textSize="45sp" />
 
         <TextView
             android:id="@+id/textView5"
@@ -37,6 +29,6 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@drawable/falcon" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

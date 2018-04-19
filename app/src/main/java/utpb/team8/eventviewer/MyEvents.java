@@ -17,20 +17,23 @@ is subscribed to*/
 public class MyEvents extends Fragment {
 
     //the name of the events
-    String[] nameArray = {"Lunch","THOR","Football"};
+    String[] nameArray = {"Lunch","THOR","Football","Project Meeting","Study Session"};
 
     //the details of the events
     String[] infoArray = {
             "Meet us for lunch at the SAC",
             "Come watch Thor in the ST @ 8 PM",
-            "Football at the park 5 PM"
+            "Football at the park 5 PM",
+            "Research meeting at the upstairs computer lab @ 7:30 PM",
+            "Cal II Study Session at the Library at 6 PM"
     };
 
     //the user defined picture for the event. or if no picture is selected then a default image will need to be loaded into the array for the event
-    Integer[] imageArray = {R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background};
+    Integer[] imageArray = {R.drawable.lunch,
+            R.drawable.thor,
+            R.drawable.football,
+            R.drawable.project,
+            R.drawable.study};
 
     ListView listView;
 

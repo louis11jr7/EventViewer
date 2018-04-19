@@ -13,18 +13,18 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
-    <ImageButton
+    <ImageView
         android:id="@+id/profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@color/darkorange"
-        app:srcCompat="@drawable/ic_perm_identity_black_24dp" />
+        app:srcCompat="@drawable/falcon" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="User Profile"
+        android:text="Username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>

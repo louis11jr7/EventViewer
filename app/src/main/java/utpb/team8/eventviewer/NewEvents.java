@@ -32,12 +32,12 @@ public class NewEvents extends Fragment {
             "Basketball at the dorms 5 PM"
     };
     //user defined image for the event. If no image is chosen, then a default image will need to be used
-    Integer[] imageArray = {R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background};
+    Integer[] imageArray = {R.drawable.party,
+            R.drawable.meeting,
+            R.drawable.breakfast,
+            R.drawable.cleanup,
+            R.drawable.movies,
+            R.drawable.basketball};
 
     ListView listView;
 
