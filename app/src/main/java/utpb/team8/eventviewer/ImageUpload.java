@@ -1,5 +1,6 @@
 package utpb.team8.eventviewer;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,14 +37,16 @@ public class ImageUpload extends AppCompatActivity {
     private ImageView ivImage;
     private String userChoosenTask;
 
+    Button btnUpload;
+    String calledBy, definition;
+
+
+    Bitmap result;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_album_detail);
-
-        String savedExtra = getIntent().getStringExtra("Title");
-        TextView myText = (TextView) findViewById(R.id.albumTitle1);
-        myText.setText(savedExtra);
+        setContentView(R.layout.upload_image);
 
         btnSelect = (Button) findViewById(R.id.btnSelectPhoto);
         btnSelect.setOnClickListener(new OnClickListener() {
@@ -54,6 +57,21 @@ public class ImageUpload extends AppCompatActivity {
             }
         });
         ivImage = (ImageView) findViewById(R.id.ivImage);
+
+
+        Bundle extras = getIntent().getExtras();
+
+        calledBy = extras.getString("CalledBy");
+        definition = extras.getString("Definition");
+
+        btnUpload = (Button) findViewById(R.id.btnUpload);
+        btnUpload.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadImage(calledBy, definition);
+            }
+        });
+
     }
 
     @Override
@@ -149,6 +167,8 @@ public class ImageUpload extends AppCompatActivity {
         }
 
         ivImage.setImageBitmap(thumbnail);
+        result = thumbnail;
+
     }//shows preview of captured image
 
     @SuppressWarnings("deprecation")
@@ -164,5 +184,37 @@ public class ImageUpload extends AppCompatActivity {
         }
 
         ivImage.setImageBitmap(bm);
+        result = bm;
     }//shows preview of gallery image after selection
+
+
+
+
+    private void uploadImage(String calledBy, String definition){
+        switch(calledBy){
+            case "album":
+                Toast.makeText(ImageUpload.this, "Added to " + definition + " album.",
+                        Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+
+            case "settings":
+                Toast.makeText(ImageUpload.this, "Added to " + definition + "'s profile.",
+                        Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+
+            case "create":
+                Toast.makeText(ImageUpload.this, "Added to the" + definition + " event.",
+                        Toast.LENGTH_SHORT).show();
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result",result);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+                break;
+
+        }
+
+    }
+
 }

@@ -35,6 +35,9 @@ public class Albums extends Fragment {
 
     ListView listView;
 
+    int[] album;
+    String[] names;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,15 +58,32 @@ public class Albums extends Fragment {
         listView = getView().findViewById(R.id.albumListViewID);
         listView.setAdapter(albums);
 
+
+
         //If a list item is clicked then the details page will be called to expand the info. Information from that individual item will be passed.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
+
+                album = new int[imageArray[position].length];
+                names = new String[imageArray[position].length];
+
+                if(imageArray[position].length > 0) {
+                    for (int i = 0; i < imageArray[position].length; i++) {
+                        album[i] = imageArray[position][i];
+                        names[i] = "name";
+                    }
+                }
+
+
                 Intent intent = new Intent(getActivity(), AlbumDetailActivity.class);
                 String eventTitle = nameArray[position];
 
                 intent.putExtra("Title", eventTitle);
+                intent.putExtra("Album", album);
+                intent.putExtra("Names", names);
+
                 startActivity(intent);
 
             }

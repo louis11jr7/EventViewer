@@ -25,10 +25,11 @@
             android:textAlignment="center"
             android:textSize="30sp" />
 
-        <ImageView
-            android:id="@+id/imageView2"
+        <ImageButton
+            android:id="@+id/profilePicture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             app:srcCompat="@drawable/falcon" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
