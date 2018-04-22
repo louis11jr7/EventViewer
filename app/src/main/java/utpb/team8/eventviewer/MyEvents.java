@@ -15,6 +15,9 @@ import android.widget.AdapterView.OnItemClickListener;
 in order to generate a list view of the events. Specifically, this will show events that the user
 is subscribed to*/
 public class MyEvents extends Fragment {
+    //the three arrays defined here are hardcoded with information but they would be where
+    //information from the database would be loaded
+
 
     //the name of the events
     String[] nameArray = {"Lunch","THOR","Football","Project Meeting","Study Session"};

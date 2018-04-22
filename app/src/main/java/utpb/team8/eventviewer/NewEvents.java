@@ -20,6 +20,9 @@ import java.io.ByteArrayOutputStream;
  that the user has not subscribed to
  */
 public class NewEvents extends Fragment {
+    //the three arrays defined here are hardcoded with information but they would be where
+    //information from the database would be loaded
+
     //name of the events
     String[] nameArray = {"Party","Meeting","Breakfast","Cleanup","Movie Night","Basketball" };
     //details of the events

@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-
+/*This custom list adapter class is used to build the list view for the albumDetailActivity page
+The list layout is defined in the activity_album_detail.xml and this class loads information into those blank lists
+ */
 public class AlbumDetailAdapter extends ArrayAdapter {
 
     private final Activity context;
@@ -24,6 +26,7 @@ public class AlbumDetailAdapter extends ArrayAdapter {
         this.nameArray=nameArrayParam;
     }
 
+    //this is a very basic layout because there is only an imageView on each row
     public View getView(int position, View view, ViewGroup parent){
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.album_detail_listview_row, null, true);

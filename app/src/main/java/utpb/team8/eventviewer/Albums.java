@@ -69,14 +69,16 @@ public class Albums extends Fragment {
                 album = new int[imageArray[position].length];
                 names = new String[imageArray[position].length];
 
+                /*the imageArray we have is of Integer[] type but an array of that type cannot be passed through an intent
+                so an int[] array must be used in it's place. Here the int[] array is loaded to match the original imageArray
+                 */
                 if(imageArray[position].length > 0) {
                     for (int i = 0; i < imageArray[position].length; i++) {
                         album[i] = imageArray[position][i];
                         names[i] = "name";
                     }
                 }
-
-
+                //the AlbumDetailActivity is called using this intent and all necessary information is passed as extras
                 Intent intent = new Intent(getActivity(), AlbumDetailActivity.class);
                 String eventTitle = nameArray[position];
 

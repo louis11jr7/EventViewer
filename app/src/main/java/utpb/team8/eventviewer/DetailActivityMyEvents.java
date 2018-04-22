@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/*When an event listing is expanded this class controls the corresponding individual album page
+/*When an event listing is expanded this class will show expanded details of the event
 Each individual event page will load different information but it will all be loaded in the same way as defined in this class
  */
 public class DetailActivityMyEvents extends AppCompatActivity {

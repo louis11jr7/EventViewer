@@ -20,6 +20,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        //extras that were passed from the NewEvents page are gathered here
         Bundle extras = getIntent().getExtras();
 
         String eventTitle = extras.getString("Title");
@@ -38,11 +39,16 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    //when the cancel button is pressed, this method is called which simply finished the activity
     public void goBack(View view)
     {
         finish();
     }
 
+    /*when the submit button is pressed, this method is called
+      currently the method simply creates a toast that tells the user the method has been added to MyEvents
+      This method is where there would be code to write to the database to update the event list with this user as
+      being subscribed to it, therefore changing the location of where the event would show up from NewEvents to MyEvents*/
     public void submit(View view)
     {
         //this will be used to add this event to the user's myEvents list

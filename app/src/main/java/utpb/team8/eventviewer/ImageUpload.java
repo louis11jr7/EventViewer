@@ -58,7 +58,11 @@ public class ImageUpload extends AppCompatActivity {
         });
         ivImage = (ImageView) findViewById(R.id.ivImage);
 
-
+        /*the classes that are able to call this activity will each send two variables: calledBy
+        which is an identifier for which class called this activity and definition which is
+        a variable that will have either the album, event, or user information that is
+        needed to make an insertion into the database
+         */
         Bundle extras = getIntent().getExtras();
 
         calledBy = extras.getString("CalledBy");
@@ -68,6 +72,7 @@ public class ImageUpload extends AppCompatActivity {
         btnUpload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                //when the upload button is clicked, the uploadImage method is called
                 uploadImage(calledBy, definition);
             }
         });
@@ -167,6 +172,7 @@ public class ImageUpload extends AppCompatActivity {
         }
 
         ivImage.setImageBitmap(thumbnail);
+        //the result is set to the image that was selected
         result = thumbnail;
 
     }//shows preview of captured image
@@ -184,12 +190,19 @@ public class ImageUpload extends AppCompatActivity {
         }
 
         ivImage.setImageBitmap(bm);
+        //the result is set to the image that was selected
         result = bm;
     }//shows preview of gallery image after selection
 
 
 
-
+    /*this method uses information that was passed from the class that called this activity
+    and uses them to decide how the image that is selected will be uploaded.
+    At the moment the method simply creates a toast message with information relating to the
+    activity that called it. However, this is where database insertion code would be placed.
+    The class uses switch case so that multiple activities can call this activity and we would be able to
+    handle the information differently based on what activity was the caller.
+     */
     private void uploadImage(String calledBy, String definition){
         switch(calledBy){
             case "album":
@@ -207,6 +220,7 @@ public class ImageUpload extends AppCompatActivity {
             case "create":
                 Toast.makeText(ImageUpload.this, "Added to the" + definition + " event.",
                         Toast.LENGTH_SHORT).show();
+                //This intent is used to return the result (the image that was selected) to the CreateEvent activity
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result",result);
                 setResult(Activity.RESULT_OK, returnIntent);
