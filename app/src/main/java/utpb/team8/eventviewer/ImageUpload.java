@@ -277,10 +277,10 @@ public class ImageUpload extends AppCompatActivity {
                     }
                 });
 
-                //This intent is used to return the result (the image that was selected) to the CreateEvent activity
+                /*This intent is used to return the result (the image that was selected) to the CreateEvent activity
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result",result);
-                setResult(Activity.RESULT_OK, returnIntent);
+                setResult(Activity.RESULT_OK, returnIntent);*/
                 finish();
                 break;
 

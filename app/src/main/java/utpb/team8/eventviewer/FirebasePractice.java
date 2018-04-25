@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,13 +33,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class FirebasePractice extends AppCompatActivity {
 
-    private Button mSelectImage;
+    private DatabaseReference mRef;
 
-    private StorageReference mStorage;
+    private ArrayList<String> mUsername;
+
+    private ListView mListView;
 
     private static final int GALLERY_INTENT = 2;
     @Override
@@ -45,37 +50,43 @@ public class FirebasePractice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_practice);
 
-       mStorage = FirebaseStorage.getInstance().getReference();
+        mRef = FirebaseDatabase.getInstance().getReference();
 
-        mSelectImage = (Button) findViewById(R.id.selectImage);
+        mListView = (ListView)findViewById(R.id.listViewFirebase);
 
-        mSelectImage.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mUsername);
+
+        mListView.setAdapter(arrayAdapter);
+
+        mRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String value = dataSnapshot.getValue(String.class);
 
-                intent.setType("image/*");
+                mUsername.add(value);
 
-                startActivityForResult(intent, GALLERY_INTENT);
+                //arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-
-        if(requestCode==GALLERY_INTENT && resultCode==RESULT_OK){
-            Uri uri = data.getData();
-
-            StorageReference filepath = mStorage.child("Photos").child(uri.getLastPathSegment());
-
-            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(FirebasePractice.this, "Upload Done", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
     }
 }
