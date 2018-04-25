@@ -25,6 +25,12 @@ public class CustomListAdapter extends ArrayAdapter {
     //to store the event information
     private final String[] infoArray;
 
+    static class ViewHolder{
+        public TextView nameTextField;
+        public TextView infoTextField;
+        public  ImageView imageView;
+    }
+
 
     public CustomListAdapter(Activity context, String[] nameArrayParam, String[] infoArrayParam, Integer[] imageIDArrayParam) {
 
@@ -38,7 +44,35 @@ public class CustomListAdapter extends ArrayAdapter {
     }
 
     public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater=context.getLayoutInflater();
+       View rowView = view;
+
+       if(rowView == null){
+           LayoutInflater inflater = context.getLayoutInflater();
+           rowView = inflater.inflate(R.layout.listview_row, null);
+
+           ViewHolder viewHolder = new ViewHolder();
+           viewHolder.nameTextField = (TextView) rowView.findViewById(R.id.nameTextViewID);
+           viewHolder.infoTextField = (TextView) rowView.findViewById(R.id.infoTextViewID);
+           viewHolder.imageView = (ImageView) rowView.findViewById(R.id.imageView1ID);
+           rowView.setTag(viewHolder);
+       }
+
+       ViewHolder holder = (ViewHolder) rowView.getTag();
+       String s = nameArray[position];
+       String t = infoArray[position];
+
+
+       holder.nameTextField.setText(s);
+       holder.infoTextField.setText(t);
+       holder.imageView.setImageResource(imageIDarray[position]);
+
+
+       return rowView;
+
+
+
+
+        /* LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.listview_row, null,true);
 
         //this code gets references to objects in the listview_row.xml file
@@ -51,10 +85,10 @@ public class CustomListAdapter extends ArrayAdapter {
         infoTextField.setText(infoArray[position]);
         imageView.setImageResource(imageIDarray[position]);
 
-        return rowView;
+        return rowView;*/
 
-    };
+    }
 
-    ;
+
 
 }
