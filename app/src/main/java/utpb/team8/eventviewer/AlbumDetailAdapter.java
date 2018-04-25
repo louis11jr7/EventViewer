@@ -18,6 +18,10 @@ public class AlbumDetailAdapter extends ArrayAdapter {
 
     private final String[] nameArray;
 
+    static class ViewHolder{
+        public ImageView imageView;
+    }
+
     public AlbumDetailAdapter(Activity context, String[] nameArrayParam, Integer[] imageIDarray) {
         super(context, R.layout.album_detail_listview_row, nameArrayParam);
 
@@ -28,14 +32,32 @@ public class AlbumDetailAdapter extends ArrayAdapter {
 
     //this is a very basic layout because there is only an imageView on each row
     public View getView(int position, View view, ViewGroup parent){
-        LayoutInflater inflater=context.getLayoutInflater();
+
+        View rowView = view;
+
+        if(rowView == null){
+            LayoutInflater inflater = context.getLayoutInflater();
+            rowView = inflater.inflate(R.layout.album_detail_listview_row,null);
+
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.imageView = (ImageView) rowView.findViewById(R.id.imageViewAlbumDetail);
+            rowView.setTag(viewHolder);
+        }
+
+        ViewHolder viewHolder = (ViewHolder) rowView.getTag();
+        viewHolder.imageView.setImageResource(imagesArray[position]);
+
+        return rowView;
+
+
+        /* LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.album_detail_listview_row, null, true);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imageViewAlbumDetail);
 
         imageView.setImageResource((imagesArray[position]));
 
-        return rowView;
+        return rowView;*/
 
     }
 
