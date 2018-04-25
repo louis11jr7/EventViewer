@@ -7,12 +7,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 //this will handle all the users settings
 public class Settings extends Fragment {
 
+    TextView username;
+    TextView password;
+
     ImageButton camera;
+    Button signOut;
+
+
 
     @Nullable
     @Override
@@ -28,6 +39,23 @@ public class Settings extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Settings");
+
+        username = (TextView)getView().findViewById(R.id.usernameSettings);
+        password = (TextView)getView().findViewById(R.id.passwordSettings);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String nameString = user.getEmail();
+
+        username.setText(nameString);
+
+        signOut = (Button)getView().findViewById(R.id.signOut);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getActivity(), Login.class));
+            }
+        });
 
         camera = (ImageButton) getView().findViewById(R.id.profilePicture);
         camera.setOnClickListener(new View.OnClickListener() {

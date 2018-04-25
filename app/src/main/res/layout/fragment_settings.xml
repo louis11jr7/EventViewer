@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/usernameSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Username"
@@ -18,7 +18,7 @@
             android:textSize="45sp" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/passwordSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
@@ -31,5 +31,11 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/falcon" />
+
+        <Button
+            android:id="@+id/signOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Out" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
