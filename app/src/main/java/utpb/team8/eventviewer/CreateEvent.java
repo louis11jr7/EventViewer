@@ -83,7 +83,8 @@ public class CreateEvent extends Fragment {
             @Override
             public void onClick(View view) {
                 //when the submit button is clicked, the uploadToDatabase method is called
-                uploadToDatabase(titleString, detailsString, dateString, image);
+                uploadToDatabase(titleString, detailsString, dateString);
+                startActivity(new Intent(getActivity(), MainActivity.class));
             }
         });
     }
@@ -99,7 +100,8 @@ public class CreateEvent extends Fragment {
 
     }
     //this method is where all code for database upload would be placed
-    private void uploadToDatabase(String titleString, String detailsString, String dateString, ImageView image) {
+    private void uploadToDatabase(String titleString, String detailsString, String dateString) {
+
     }
 
     //this method gathers the information that was passed back from the ImageUpload Activity

@@ -1,6 +1,11 @@
 package utpb.team8.eventviewer;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +33,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 /*Will be called by other pages whenever a user wants to upload an image from
 either their camera or gallery*/
 public class ImageUpload extends AppCompatActivity {
@@ -36,6 +46,10 @@ public class ImageUpload extends AppCompatActivity {
     private Button btnSelect;
     private ImageView ivImage;
     private String userChoosenTask;
+
+    private StorageReference mStorage;
+
+    static final Integer WRITE_EXST = 0x3;
 
     Button btnUpload;
     String calledBy, definition;
@@ -47,6 +61,8 @@ public class ImageUpload extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.upload_image);
+
+        mStorage = FirebaseStorage.getInstance().getReference();
 
         btnSelect = (Button) findViewById(R.id.btnSelectPhoto);
         btnSelect.setOnClickListener(new OnClickListener() {
@@ -91,6 +107,9 @@ public class ImageUpload extends AppCompatActivity {
                 } else {
                     //code for deny
                 }
+                break;
+
+            case 3:
                 break;
         }
     }
@@ -194,6 +213,12 @@ public class ImageUpload extends AppCompatActivity {
         result = bm;
     }//shows preview of gallery image after selection
 
+    public Uri getImageUri(Context context, Bitmap inImage){
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(),inImage, "Title",null);
+        return Uri.parse(path);
+    }
 
 
     /*this method uses information that was passed from the class that called this activity
@@ -204,22 +229,54 @@ public class ImageUpload extends AppCompatActivity {
     handle the information differently based on what activity was the caller.
      */
     private void uploadImage(String calledBy, String definition){
+        askForPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXST);
+
         switch(calledBy){
             case "album":
                 Toast.makeText(ImageUpload.this, "Added to " + definition + " album.",
                         Toast.LENGTH_SHORT).show();
+
+                Uri uri = getImageUri(ImageUpload.this, result);
+                StorageReference filepath = mStorage.child(definition).child(uri.getLastPathSegment());
+                filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(ImageUpload.this, "Upload Done", Toast.LENGTH_LONG).show();
+                    }
+                });
+
                 finish();
                 break;
 
             case "settings":
                 Toast.makeText(ImageUpload.this, "Added to " + definition + "'s profile.",
                         Toast.LENGTH_SHORT).show();
+
+                Uri uri2 = getImageUri(ImageUpload.this, result);
+                StorageReference filepath2 = mStorage.child(definition);
+                filepath2.putFile(uri2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(ImageUpload.this, "Upload Done", Toast.LENGTH_LONG).show();
+                    }
+                });
                 finish();
                 break;
 
             case "create":
                 Toast.makeText(ImageUpload.this, "Added to the" + definition + " event.",
                         Toast.LENGTH_SHORT).show();
+
+
+                Uri uri3 = getImageUri(ImageUpload.this, result);
+                StorageReference filepath3 = mStorage.child(definition);
+                filepath3.putFile(uri3).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(ImageUpload.this, "Upload Done", Toast.LENGTH_LONG).show();
+                    }
+                });
+
                 //This intent is used to return the result (the image that was selected) to the CreateEvent activity
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result",result);
@@ -230,5 +287,21 @@ public class ImageUpload extends AppCompatActivity {
         }
 
     }
+
+    private void askForPermission(String permission, Integer requestCode){
+        if(ContextCompat.checkSelfPermission(ImageUpload.this, permission) !=
+                PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(ImageUpload.this, permission)){
+                ActivityCompat.requestPermissions(ImageUpload.this, new String[]{permission}, requestCode);
+            }
+            else{
+                ActivityCompat.requestPermissions(ImageUpload.this, new String[]{permission}, requestCode);
+            }
+        }
+        else{
+            Toast.makeText(this, "" + permission + "is already granted.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
