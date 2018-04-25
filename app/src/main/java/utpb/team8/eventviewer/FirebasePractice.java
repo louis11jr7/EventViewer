@@ -3,6 +3,7 @@ package utpb.team8.eventviewer;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Comment;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +43,8 @@ public class FirebasePractice extends AppCompatActivity {
 
     private DatabaseReference mRef;
 
-    private ArrayList<String> mUsername;
+    private ArrayList<String> nameList = new ArrayList<>();
+    private ArrayList<String> infoList = new ArrayList<>();
 
     private ListView mListView;
 
@@ -50,22 +54,56 @@ public class FirebasePractice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_practice);
 
-        mRef = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final String nameString = currentUser.getEmail();
+
+        mRef = FirebaseDatabase.getInstance().getReference().child("Events");
 
         mListView = (ListView)findViewById(R.id.listViewFirebase);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mUsername);
+        final CustomListAdapterFirebase adapter = new CustomListAdapterFirebase(FirebasePractice.this, nameList, infoList);
+        mListView.setAdapter(adapter);
 
-        mListView.setAdapter(arrayAdapter);
-
-        mRef.addChildEventListener(new ChildEventListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String value = dataSnapshot.getValue(String.class);
+                Log.v("onChildAdded:", dataSnapshot.getKey());
+                DataSnapshot names = dataSnapshot.child("Name");
+                if(names.getValue() != null) {
+                    Log.v("Name:", names.getValue().toString());
+                }
+                DataSnapshot information = dataSnapshot.child("Info");
+                if(information.getValue() != null){
+                    Log.v("Info:", information.getValue().toString());
+                }
+                DataSnapshot guests = dataSnapshot.child("Guests");
+                if(guests.getValue() != null){
+                    Log.v("Guests:", guests.getValue().toString());
+                }
+                DataSnapshot guestNumber = dataSnapshot.child("GuestCount");
+                if(guestNumber.getValue() != null){
+                    String match= "";
+                    Log.v("GuestCount:", guestNumber.getValue().toString());
+                    int guestCounter = Integer.parseInt(guestNumber.getValue().toString());
+                    for(int i = 1; i < guestCounter+1; i++){
+                        String guestCount = Integer.toString(i);
+                        DataSnapshot users = guests.child("User"+guestCount);
+                        if(users.getValue() != null){
+                            Log.v("Users:", users.getValue().toString());
+                            if(users.getValue().toString().equals(nameString)){
+                                match = "true";
+                                String nameValue = names.getValue().toString();
+                                nameList.add(nameValue);
+                                String infoValue = information.getValue().toString();
+                                infoList.add(infoValue);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                    Log.v("User match:", match);
+                }
 
-                mUsername.add(value);
 
-                //arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -87,6 +125,15 @@ public class FirebasePractice extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        mRef.addChildEventListener(childEventListener);
+
+
+
+
+
+
+
+
     }
 }
