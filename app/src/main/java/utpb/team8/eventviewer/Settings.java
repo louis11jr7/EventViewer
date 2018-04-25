@@ -44,7 +44,7 @@ public class Settings extends Fragment {
         password = (TextView)getView().findViewById(R.id.passwordSettings);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String nameString = user.getEmail();
+        String nameString = user.getDisplayName();
 
         username.setText(nameString);
 

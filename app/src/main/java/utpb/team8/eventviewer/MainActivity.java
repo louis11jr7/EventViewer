@@ -49,9 +49,7 @@ public class MainActivity extends AppCompatActivity
             username = (TextView) header.findViewById(R.id.navUsername);
 
            String nameString = user.getEmail();
-
-            username.setText(nameString);
-            Log.v("NAME",nameString);
+           username.setText(nameString);
 
        }
 
