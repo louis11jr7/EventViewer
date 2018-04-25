@@ -17,8 +17,7 @@
         android:id="@+id/profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@color/darkorange"
-        app:srcCompat="@drawable/falcon" />
+        android:background="@color/darkorange"/>
 
     <TextView
         android:id="@+id/navUsername"

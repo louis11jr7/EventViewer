@@ -7,7 +7,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/usernameSettings"
@@ -17,20 +21,12 @@
             android:textAlignment="center"
             android:textSize="45sp" />
 
-        <TextView
-            android:id="@+id/passwordSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password"
-            android:textAlignment="center"
-            android:textSize="30sp" />
-
         <ImageButton
             android:id="@+id/profilePicture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:srcCompat="@drawable/falcon" />
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent" />
 
         <Button
             android:id="@+id/signOut"

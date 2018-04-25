@@ -1,6 +1,8 @@
 package utpb.team8.eventviewer;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -15,10 +17,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -26,6 +34,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView username;
+    private ImageView profile;
+    private StorageReference mStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +58,25 @@ public class MainActivity extends AppCompatActivity
             View header = navigationView.getHeaderView(0);
             username = (TextView) header.findViewById(R.id.navUsername);
 
-           String nameString = user.getEmail();
-           username.setText(nameString);
+            String nameString = user.getEmail();
+            username.setText(nameString);
 
-       }
+            profile = (ImageView) header.findViewById(R.id.profile);
+
+            mStorage = FirebaseStorage.getInstance().getReference();
+            mStorage.child(nameString).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+
+                    Picasso.get().load(uri).fit().centerCrop().into(profile);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    //handle errors
+                }
+            });
+        }
 
         displaySelectedScreen(R.id.nav_newEvents);
     }

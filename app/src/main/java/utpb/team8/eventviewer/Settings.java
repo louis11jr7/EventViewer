@@ -1,7 +1,9 @@
 package utpb.team8.eventviewer;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,18 +13,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 //this will handle all the users settings
 public class Settings extends Fragment {
 
     TextView username;
-    TextView password;
 
     ImageButton camera;
     Button signOut;
 
+    private StorageReference mStorage;
 
 
     @Nullable
@@ -40,11 +47,25 @@ public class Settings extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Settings");
 
+
         username = (TextView)getView().findViewById(R.id.usernameSettings);
-        password = (TextView)getView().findViewById(R.id.passwordSettings);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String nameString = user.getEmail();
+
+        mStorage = FirebaseStorage.getInstance().getReference();
+        mStorage.child(nameString).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                Picasso.get().load(uri).fit().centerCrop().into(camera);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //handle errors
+            }
+        });
 
         username.setText(nameString);
 
