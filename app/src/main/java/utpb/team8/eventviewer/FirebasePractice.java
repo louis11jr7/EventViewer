@@ -48,7 +48,6 @@ public class FirebasePractice extends AppCompatActivity {
 
     private ListView mListView;
 
-    private static final int GALLERY_INTENT = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

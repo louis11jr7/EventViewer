@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,36 +14,28 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 /*This class gathers information from the database and sends that information to the customListAdapter class
  to generate lists of the events. Specifically this class will gather the information from events
  that the user has not subscribed to
  */
 public class NewEvents extends Fragment {
-    //the three arrays defined here are hardcoded with information but they would be where
-    //information from the database would be loaded
+    private DatabaseReference mRef;
 
-    //name of the events
-    String[] nameArray = {"Party","Meeting","Breakfast","Cleanup","Movie Night","Basketball" };
-    //details of the events
-    String[] infoArray = {
-            "Party at the SAC 6-9 PM",
-            "Business meeting @ FishBowl 8-9 AM",
-            "Breakfast at the RDH 9-11 AM",
-            "Help cleanup the quad 5-7 PM",
-            "Come watch Spiderman @ the SAC 7 PM",
-            "Basketball at the dorms 5 PM"
-    };
-    //user defined image for the event. If no image is chosen, then a default image will need to be used
-    Integer[] imageArray = {R.drawable.party,
-            R.drawable.meeting,
-            R.drawable.breakfast,
-            R.drawable.cleanup,
-            R.drawable.movies,
-            R.drawable.basketball};
+    private ArrayList<String> nameList = new ArrayList<>();
+    private ArrayList<String> infoList = new ArrayList<>();
 
-    ListView listView;
+    ListView mListView;
 
     @Nullable
     @Override
@@ -59,22 +52,92 @@ public class NewEvents extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("New Events");
         //creates an instance and sends the information gathered in this class to the adapter class
-        CustomListAdapter whatever = new CustomListAdapter(getActivity(), nameArray, infoArray, imageArray);
-        listView = (ListView) getView().findViewById(R.id.listviewID);
-        listView.setAdapter(whatever);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final String nameString = currentUser.getEmail();
+
+        mRef = FirebaseDatabase.getInstance().getReference().child("Events");
+
+        mListView = (ListView)getView().findViewById(R.id.listviewID);
+
+        final CustomListAdapter adapter = new CustomListAdapter(getActivity(), nameList, infoList);
+        mListView.setAdapter(adapter);
+
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.v("onChildAdded:", dataSnapshot.getKey());
+                DataSnapshot names = dataSnapshot.child("Name");
+                if(names.getValue() != null) {
+                    Log.v("Name:", names.getValue().toString());
+                }
+                DataSnapshot information = dataSnapshot.child("Info");
+                if(information.getValue() != null){
+                    Log.v("Info:", information.getValue().toString());
+                }
+                DataSnapshot guests = dataSnapshot.child("Guests");
+                if(guests.getValue() != null){
+                    Log.v("Guests:", guests.getValue().toString());
+                }
+                DataSnapshot guestNumber = dataSnapshot.child("GuestCount");
+                if(guestNumber.getValue() != null){
+                    String match= "";
+                    Log.v("GuestCount:", guestNumber.getValue().toString());
+                    int guestCounter = Integer.parseInt(guestNumber.getValue().toString());
+                    for(int i = 1; i < guestCounter+1; i++){
+                        String guestCount = Integer.toString(i);
+                        DataSnapshot users = guests.child("User"+guestCount);
+                        if(users.getValue() != null){
+                            Log.v("Users:", users.getValue().toString());
+                            if(users.getValue().toString().equals(nameString)){
+                                match = "true";
+                                break;
+                            }
+                            else{match = "false";}
+                        }
+                    }
+                    Log.v("User match:", match);
+                    if(match.equals("false")){
+                        String nameValue = names.getValue().toString();
+                        nameList.add(nameValue);
+                        String infoValue = information.getValue().toString();
+                        infoList.add(infoValue);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        mRef.addChildEventListener(childEventListener);
         //if a list item is clicked then the information will be passed to a details page
-        listView.setOnItemClickListener(new OnItemClickListener() {
+       mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                String eventTitle = nameArray[position];
-                String eventInfo = infoArray[position];
-                Integer eventImage = imageArray[position];
+                String eventTitle = nameList.get(position);
+                String eventInfo = infoList.get(position);
 
                 intent.putExtra("Title", eventTitle);
                 intent.putExtra("Info", eventInfo);
-                intent.putExtra("Image", eventImage);
                 startActivity(intent);
 
             }
