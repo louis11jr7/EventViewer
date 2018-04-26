@@ -1,12 +1,28 @@
 package utpb.team8.eventviewer;
 
 import android.app.Activity;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /*This custom list adapter class is used to build the list view for the albums page
 The list layout is defined in the album_listview.xml and this class loads information into those blank lists
@@ -16,14 +32,18 @@ public class AlbumListAdapter extends ArrayAdapter {
 
     private final Activity context;
 
-    private final String[] nameArray;
+    private final ArrayList<String> nameArray;
 
-    private final Integer[][] imagesArray;
+    private StorageReference mStorage;
 
-    private Integer image1;
-    private Integer image2;
-    private Integer image3;
-    private Integer image4;
+    private int positionPrivate;
+
+    private String eventName;
+
+    private ArrayList<String> image1 = new ArrayList<>();
+    private ArrayList<String> image2 = new ArrayList<>();
+    private ArrayList<String> image3 = new ArrayList<>();
+    private ArrayList<String> image4 = new ArrayList<>();
 
     static class ViewHolder{
         public TextView nameTextField;
@@ -33,16 +53,21 @@ public class AlbumListAdapter extends ArrayAdapter {
         public ImageView imageView4;
     }
 
-    public AlbumListAdapter(Activity context, String[] nameArrayParam, Integer[][] imageIDArrayParam){
+    public AlbumListAdapter(Activity context, ArrayList<String> nameArrayParam, ArrayList<String> imageOne, ArrayList<String> imageTwo, ArrayList<String> imageThree, ArrayList<String> imageFour){
 
         super(context,R.layout.album_listview , nameArrayParam);
 
         this.context=context;
-        this.imagesArray = imageIDArrayParam;
         this.nameArray=nameArrayParam;
+        this.image1=imageOne;
+        this.image2=imageTwo;
+        this.image3=imageThree;
+        this.image4=imageFour;
     }
 
     public View getView(int position, View view, ViewGroup parent) {
+        positionPrivate = position;
+
         View rowView = view;
 
         if(rowView == null){
@@ -58,14 +83,23 @@ public class AlbumListAdapter extends ArrayAdapter {
             rowView.setTag(viewHolder);
         }
 
-        getImages(position);
+        //getImages();
+        //getImages(position);
+
+        eventName = nameArray.get(position);
 
         ViewHolder holder = (ViewHolder) rowView.getTag();
-        holder.nameTextField.setText(nameArray[position]);
-        holder.imageView.setImageResource(image1);
-        holder.imageView2.setImageResource(image2);
-        holder.imageView3.setImageResource(image3);
-        holder.imageView4.setImageResource(image4);
+        holder.nameTextField.setText(nameArray.get(position));
+
+        Picasso.get().load(image1.get(position)).fit().centerInside().into(holder.imageView);
+        Picasso.get().load(image2.get(position)).fit().centerInside().into(holder.imageView2);
+        Picasso.get().load(image3.get(position)).fit().centerInside().into(holder.imageView3);
+        Picasso.get().load(image4.get(position)).fit().centerInside().into(holder.imageView4);
+
+        //holder.imageView.setImageResource(image1);
+       // holder.imageView2.setImageResource(image2);
+       // holder.imageView3.setImageResource(image3);
+       // holder.imageView4.setImageResource(image4);
 
 
         return rowView;
@@ -88,10 +122,15 @@ public class AlbumListAdapter extends ArrayAdapter {
 
     }
 
-    private void getImages(int position) {
+    private void getImages() {
+
+
+    }
+
+   /* private void getImages(int position) {
         //If there are 4 or more images in the album then the list view will show the first 4 of the album
-        if(imagesArray[position].length >= 4){
-            image1 = imagesArray[position][0];
+        if(imagesArray.get(position).length >= 4){
+            image1 = imagesArray.get(position)[0];
             image2 = imagesArray[position][1];
             image3 = imagesArray[position][2];
             image4 = imagesArray[position][3];
@@ -126,5 +165,5 @@ public class AlbumListAdapter extends ArrayAdapter {
         }
 
 
-    }
+    }*/
 }

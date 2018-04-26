@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -34,6 +35,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,6 +54,12 @@ public class ImageUpload extends AppCompatActivity {
     private String userChoosenTask;
 
     private StorageReference mStorage;
+
+    private DatabaseReference mRef;
+
+    private int eventID;
+    private int imageCounter;
+    private String strFilePath;
 
     static final Integer WRITE_EXST = 0x3;
 
@@ -228,7 +240,7 @@ public class ImageUpload extends AppCompatActivity {
     The class uses switch case so that multiple activities can call this activity and we would be able to
     handle the information differently based on what activity was the caller.
      */
-    private void uploadImage(String calledBy, String definition){
+    private void uploadImage(String calledBy, final String definition){
         askForPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXST);
 
         switch(calledBy){
@@ -236,14 +248,58 @@ public class ImageUpload extends AppCompatActivity {
                 Toast.makeText(ImageUpload.this, "Added to " + definition + " album.",
                         Toast.LENGTH_SHORT).show();
 
+
                 Uri uri = getImageUri(ImageUpload.this, result);
-                StorageReference filepath = mStorage.child(definition).child(uri.getLastPathSegment());
+                StorageReference filepath = mStorage.child(definition+"Album").child(uri.getLastPathSegment());
                 filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(ImageUpload.this, "Upload Done", Toast.LENGTH_LONG).show();
+                        Uri downloadUri = taskSnapshot.getDownloadUrl();
+                        strFilePath = downloadUri.toString();
+                        Toast.makeText(ImageUpload.this, "Upload Done: ", Toast.LENGTH_LONG).show();
+                        submission();
                     }
                 });
+                mRef = FirebaseDatabase.getInstance().getReference().child("Events");
+
+                ChildEventListener childEventListener = new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        DataSnapshot names = dataSnapshot.child("Name");
+                        if(names.getValue() != null){
+                            if(names.getValue().equals(definition)){
+                                eventID = Integer.parseInt(dataSnapshot.getKey().toString());
+                                DataSnapshot album = dataSnapshot.child(definition+"Album");
+                                if(album.getValue() !=null){
+                                    DataSnapshot imageCount = album.child("ImageCount");
+                                    imageCounter = Integer.parseInt(imageCount.getValue().toString());
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                };
+                mRef.addChildEventListener(childEventListener);
 
                 finish();
                 break;
@@ -286,6 +342,22 @@ public class ImageUpload extends AppCompatActivity {
 
         }
 
+    }
+
+    private void submission() {
+        String eventIDString = Integer.toString(eventID);
+
+        DatabaseReference newPost = mRef.child(eventIDString);
+        String filePathString = strFilePath;
+        int count = imageCounter;
+        count = count +1;
+
+        String imageCountString = Integer.toString(count);
+        String uriName = "uri"+imageCountString;
+        newPost.child(definition+"Album").child(uriName).setValue(filePathString);
+        newPost.child(definition+"Album").child("ImageCount").setValue(count);
+
+        Log.v("FILEPATH", filePathString);
     }
 
     private void askForPermission(String permission, Integer requestCode){

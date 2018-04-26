@@ -2,6 +2,7 @@ package utpb.team8.eventviewer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,6 +31,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /*When an album listing is expanded this class controls the corresponding individual album page
 Each individual album page will load different information but it will all be loaded in the same way as defined in this class
 
@@ -37,13 +45,14 @@ Each individual album page will load different information but it will all be lo
  */
 public class AlbumDetailActivity extends AppCompatActivity {
 
-    String [] nameArray;
-    int[] imagesArrayPre;
-    Integer[] imageArray;
+    private DatabaseReference mRef;
+
+    private ArrayList<String> namesArray = new ArrayList<>();
+    private ArrayList<String> images = new ArrayList<>();
 
     ImageButton camera;
 
-    ListView listView;
+    ListView mListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,25 +65,56 @@ public class AlbumDetailActivity extends AppCompatActivity {
         TextView myTitle = (TextView) findViewById(R.id.albumName);
         myTitle.setText(eventTitle);
 
+        mRef = FirebaseDatabase.getInstance().getReference().child("Events");
 
-        nameArray = extras.getStringArray("Names");
-        //the images array is passed as an int[] array from the Albums class but we want to use it as an Integer[] array
-        //so first we initialize a temporary array that is an int[] array
-        imagesArrayPre = extras.getIntArray("Album");
-        //this is the actual Integer[] array that will be used with the list adapter
-        imageArray = new Integer[imagesArrayPre.length];
-        //we load the Integer[] to match the temporary int[] array we got from the Albums class
-        for(int i = 0; i < imagesArrayPre.length; i++)
-        {
-          imageArray[i] = imagesArrayPre[i];
-        }
+        mListView = (ListView) findViewById(R.id.albumDetailListView);
 
-        //this creates the instance of the adapter class and sends the info that was gathered in this class to the adapter class
-        AlbumDetailAdapter albumDetail = new AlbumDetailAdapter(this, nameArray, imageArray);
-        listView = (ListView) findViewById(R.id.albumDetailListView);
-        listView.setAdapter(albumDetail);
+        final AlbumDetailAdapter adapter = new AlbumDetailAdapter(AlbumDetailActivity.this, namesArray, images);
+        mListView.setAdapter(adapter);
 
-        //the camera button is made clickable
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                DataSnapshot names = dataSnapshot.child("Name");
+                if(names.getValue().equals(eventTitle)){
+                    DataSnapshot album = dataSnapshot.child(eventTitle+"Album");
+                    DataSnapshot imageCounter = album.child("ImageCount");
+                    String imageCountString = imageCounter.getValue().toString();
+                    int imageCountInt = Integer.parseInt(imageCountString);
+                    for(int i=1; i < imageCountInt+1; i++){
+                        String j = Integer.toString(i);
+                        String image = album.child("uri"+j).getValue().toString();
+                        Log.v("IMAGEID", image);
+                        images.add(image);
+                        namesArray.add("name");
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        mRef.addChildEventListener(childEventListener);
+
+
         camera = (ImageButton) findViewById(R.id.addToAlbum);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +131,6 @@ public class AlbumDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
 

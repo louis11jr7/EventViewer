@@ -138,6 +138,7 @@ public class CreateEvent extends Fragment {
         newPost.child("Info").setValue(detailsString);
         newPost.child("GuestCount").setValue("1");
         newPost.child("Guests").child("User1").setValue(nameString);
+        newPost.child(titleString+"Album").child("ImageCount").setValue(0);
 
         count = count +1;
         DatabaseReference mChildCount2 = mDatabase.child("ChildCount");
