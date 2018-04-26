@@ -14,10 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.google.firebase.auth.FirebaseAuth;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private FirebaseAuth mAuth;
 
+    private FirebaseAuth.AuthStateListener mAuthListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,18 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         displaySelectedScreen(R.id.nav_newEvents);
+        mAuth= FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged( @NonNull FirebaseAuth firebaseAuth) {
+                //Checks if user is logged in. If not, it forwards to login activity
+                if(firebaseAuth.getCurrentUser()==null){
+                    Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(loginIntent);
+                }
+            }
+        };
     }
 
     @Override
@@ -101,6 +118,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.action_createEvent:
                 fragment = new CreateEvent();
+                break;
+            case R.id.nav_Logout:
+                mAuth.signOut();//signout button in menu
                 break;
 
         }
